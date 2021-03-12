@@ -1,5 +1,4 @@
 import React,{useEffect} from 'react'
-import {Link} from 'react-router-dom'
 import {useDispatch, useSelector } from 'react-redux'
 import Product from '../components/Product'
 import Message from '../components/Message'
@@ -12,9 +11,7 @@ import {listTopProducts} from '../actions/productActions'
 
 
 
-const HomeScreen = ({match}) => {
-    const keyword = match.params.keyword
-    const pageNumber = match.params.pageNumber || 1
+const HomeScreen = () => {
     const dispatch = useDispatch()
 
     const productList = useSelector(state => state.productList)
@@ -24,21 +21,20 @@ const HomeScreen = ({match}) => {
     const {loading:loadingTopProducts, error:errorTopProducts, products:TopProduct} = productTopRated
 
     useEffect(() => {
-       dispatch(listProducts(keyword,pageNumber))
+       dispatch(listProducts())
        dispatch(listTopProducts())
-    }, [dispatch,keyword, pageNumber] )
+    }, [dispatch] )
     const swipeLeft = (element) => {
-        document.getElementById(element).scrollLeft -= 120;
+        document.getElementById(element).scrollLeft -= 160;
     }
     const swipeRight = (element) => {
-        document.getElementById(element).scrollLeft += 120;
+        document.getElementById(element).scrollLeft += 160;
     }
     
     return (
         <>
             <Meta />
-            
-            {!keyword ? <ProductCarousel/>: <Link to='/' className='btn btn-light'>Go Back</Link>}
+            <ProductCarousel/>
             <Category/>
             <div className='name-tag'><i className="fas fa-angle-double-left"/> Top Rated Products <i className="fas fa-angle-double-right"/></div>
             {

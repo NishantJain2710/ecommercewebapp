@@ -282,6 +282,7 @@ input[type=number] {
 
 
 .slider{
+  position: relative;
   margin: 10px auto;
   width: 100%;
   height: 400px;
