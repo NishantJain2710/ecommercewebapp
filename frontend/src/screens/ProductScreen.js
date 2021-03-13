@@ -77,7 +77,7 @@ const ProductScreen = ({history,match}) =>
                             </li>
                         </ul>
                     </div>
-                    <div className='product-screen-item-3' md={3}>
+                    <div className='product-screen-item-3'>
                         <div className='card'>
                             <ul>
                                 <li>

@@ -64,9 +64,9 @@ const CartScreen = ({match,location, history}) => {
             </div>
             <div className='grid-item-2'>
                 <div className='card'>
-                    <ul variant='flush'>
+                    <ul>
                         <li>
-                            <h2>Subtotal ({cartItems.reduce((acc, item)=> acc + item.qty, 0)}) Items</h2>
+                            <h2>Subtotal ({cartItems.reduce((acc, item)=> acc + item.qty, 0)}) Items Price </h2>
                             ₹ {cartItems.reduce((acc,item) => acc + item.qty * item.price, 0).toFixed(2)}
                         </li>
                         <li>
