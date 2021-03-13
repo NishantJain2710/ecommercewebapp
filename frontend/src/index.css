@@ -640,7 +640,26 @@ input[type=number] {
   display: block;
   margin-bottom: 20px;
 }
-
+@media screen and (max-width: 1200px){
+  .col-form{
+    width: 60%;
+  }
+}
+@media screen and (max-width: 992px){
+  .col-form{
+    width: 80%;
+  }
+}
+@media screen and (max-width: 768px){
+  .col-form{
+    width: 90%;
+  }
+}
+@media screen and (max-width: 576px){
+  .col-form{
+    width: 100%;
+  }
+}
 
 /* ...........................................................form-styling............................................................................ */
 form label{
@@ -705,14 +724,7 @@ form .primaryBtn{
     width: 60%;
   }
 }
-/* @media screen and (max-width: 730px){
-  .col-profile-screen-3{
-    width: 40%;
-  }
-  .col-profile-screen-9{
-    width: 50%;
-  }
-} */
+
 @media screen and (max-width: 820px){
   .col-profile-screen-3{
     width: 80%;
