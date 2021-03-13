@@ -251,7 +251,6 @@ input[type=number] {
 }
 
 /* ........................................Search Box..................................................... */
-
 .search {
   text-decoration: none;
   border-radius: 0;
@@ -793,6 +792,7 @@ form .primaryBtn{
 .navbar-item {
   margin: 0.4em;
   max-width: fit-content;
+  display: table;
 }
 
 .dropDown-content a i{
