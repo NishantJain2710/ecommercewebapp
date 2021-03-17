@@ -1,4 +1,7 @@
 import {
+    OTP_FAIL,
+    OTP_REQUEST,
+    OTP_SUCCESS,
     USER_DELETE_FAIL,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESS,
@@ -36,6 +39,19 @@ export const userLoginReducer = (state = {}, action)=>{
             return{ loading: false, error: action.payload }
         case USER_LOGOUT : 
             return{}
+        default: 
+        return state
+    }
+}
+
+export const otpReducer = (state = {}, action)=>{
+    switch(action.type){
+        case OTP_REQUEST :
+            return {loading : true}
+        case OTP_SUCCESS: 
+            return{ loading: false, successMessage: action.payload}
+        case OTP_FAIL : 
+            return{ loading: false, error: action.payload }
         default: 
         return state
     }

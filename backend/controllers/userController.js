@@ -1,6 +1,45 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
+import nodemailer from 'nodemailer'
+import {google} from 'googleapis'
+
+const CLIENT_ID = '197795665228-91atcioirabb5dnqqba9ditmoqguk1ee.apps.googleusercontent.com'
+const CLIENT_SECRET = 'x-KMOB5DVD9iyEngvviwi9Hf'
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground'
+const REFRESH_TOKEN = '1//04Po-fR7px_eSCgYIARAAGAQSNwF-L9Ir1dtQ7Txk6qxsGgaXXciC8c-H3wunfyXUNHwyhcmF2gdGLH3ggGdHlcEKQ66gn5Wp4-0'
+
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+
+async function sendMail(name,email,OTP){
+    try {
+        const accessToken = await oAuth2Client.getAccessToken()
+
+        const transport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: 'devnishant94@gmail.com',
+                clientId : CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken : accessToken
+            }
+        })
+        const mailOptions = {
+            from: 'Nishant Jain <devnishant94@gmail.com>',
+            to: email,
+            subject: 'OTP',
+            text: `Hey ${name}, your OTP is ${OTP}`
+        }
+
+        const result = await transport.sendMail(mailOptions)
+        return result 
+    } catch (error) {
+        return error
+    }
+}
 
 
 
@@ -25,37 +64,80 @@ const authUser = asyncHandler(async(req,res) => {
         throw new Error('Invalid email or password')
     }
 })
-
+var OTP = ''
+const otpValidation = asyncHandler(async(req,res)=>{
+    const {name,email} = req.body
+    const userExist = await User.findOne({email})
+    if(userExist){
+        res.status(400)
+        throw new Error('User already exists')
+    }else if(name===''){
+        res.status(401)
+        throw new Error('Enter Name')
+    }else if(email === '' )
+    {
+        res.status(401)
+        throw new Error('Enter Email')
+    }
+    OTP = (Math.floor((Math.random())*(1000000-99999))+99999).toString();
+    sendMail(name,email,OTP)
+    res.json(
+        {
+            name: name,
+            email: email,
+            Message:'OTP has been send to your email address'
+        });
+})
 
 //@desc     Register a new user
 //@route    POST /api/users
 //@access   Public
 const registerUser = asyncHandler(async(req,res) => {
-    const {name, email, password} = req.body
+    const {name, email, password, otp} = req.body
     const userExist = await User.findOne({email})
-
     if(userExist){
         res.status(400)
         throw new Error('User already exists')
+    }else if(name===''){
+        res.status(401)
+        throw new Error('Enter Name')
+    }else if(email === '' )
+    {
+        res.status(401)
+        throw new Error('Enter Email')
+    }else if(otp === ''){
+        res.status(401)
+        throw new Error('Enter OTP')
+    }else if(OTP === ''){
+        res.status(401)
+        throw new Error('Generate OTP')
+    }else if(password === '' )
+    {
+        res.status(401)
+        throw new Error('Enter Password')
     }
-    const user = await User.create({
-        name,
-        email,
-        password
-    })
-
-    if(user){
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            isSeller: user.isSeller,
-            token: generateToken(user._id)
+    if(otp === OTP){
+        const user = await User.create({
+            name,
+            email,
+            password
         })
+        if(user){
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                isSeller: user.isSeller,
+                token: generateToken(user._id)
+            })
+        }else{
+            res.status(400)
+            throw new Error('Invalid User Data')
+        }
     }else{
         res.status(400)
-        throw new Error('Invalid User Data')
+        throw new Error('Incorrect OTP')
     }
 })
 
@@ -201,5 +283,6 @@ export{
     deleteUser,
     getUserById,
     updateUser,
+    otpValidation
 
 }

@@ -4,16 +4,20 @@ import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import {register} from '../actions/userAction' 
+import {oneTimePass, register} from '../actions/userAction' 
 const RegisterScreen = ({location, history}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [otp, setOtp] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
 
     const dispatch =useDispatch()
+
+    const Otp = useSelector(state => state.Otp)
+    const {loading:loadingMessage,error:errorMessage,successMessage} = Otp
 
     const userRegister = useSelector(state => state.userRegister)
     const {loading,error,userInfo} = userRegister
@@ -31,9 +35,13 @@ const RegisterScreen = ({location, history}) => {
         if(password !==confirmPassword){
             setMessage('Passwords do not match')
         }else{
-           dispatch(register(name,email,password))
+           dispatch(register(name,email,otp,password))
         }
     }
+    const next = (e)=>{
+        e.preventDefault()
+        dispatch(oneTimePass(name,email))
+    }   
     return (
         <FormContainer>
             <h1>Sign Up</h1>
@@ -44,11 +52,22 @@ const RegisterScreen = ({location, history}) => {
                     </input>
                 </div>
                 <label>Email Address</label>
-                <div >
+                <div>
                     <input type="email" placeholder= 'example@example.com' value= {email} onChange={(e) => setEmail(e.target.value)}>
                     </input>
                 </div>
-                <label>password</label>
+                <button onClick={next} className='primaryBtn getOtpBtn'>
+                    GET OTP
+                </button>
+                {successMessage && <Message variant='success'>{successMessage}</Message>}
+                {errorMessage && <Message variant='danger'>{errorMessage}</Message>}
+                {loadingMessage && <Loader/>}
+                <label>Enter OTP</label>
+                <div>
+                    <input type="text" placeholder= 'Enter OTP' value= {otp} onChange={(e) => setOtp(e.target.value)}>
+                    </input>
+                </div>
+                <label>Password</label>
                 <div>
                     <input type="password" placeholder= 'Example@123' value= {password} onChange={(e) => setPassword(e.target.value)}>
                     </input>
@@ -58,7 +77,7 @@ const RegisterScreen = ({location, history}) => {
                     <input type="password" placeholder= 'Example@123' value= {confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}>
                     </input>
                 </div>
-                <button type='submit'className='primaryBtn'>
+                <button type='submit' className='primaryBtn'>
                     Register
                 </button>
             </form>

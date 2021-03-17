@@ -8,6 +8,7 @@ import {
     deleteUser,
     getUserById,
     updateUser,
+    otpValidation,
 } from '../controllers/userController.js'
 import { protect ,admin} from '../middleware/authMiddleware.js'
 const router = express.Router()
@@ -19,6 +20,7 @@ router
 
 router.post('/login', authUser)
 
+router.post('/otpconfirmation',otpValidation)
 router
     .route('/profile')
     .get(protect,getUserProfile)
