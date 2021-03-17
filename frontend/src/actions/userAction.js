@@ -69,7 +69,7 @@ export const logout = () => (dispatch)=>{
     document.location.href = '/login'
 }
 
-export const oneTimePass = (name,email)=> async(dispatch) =>{
+export const oneTimePass = (name,email,phoneNumber)=> async(dispatch) =>{
     try {
         dispatch({
             type: OTP_REQUEST
@@ -81,7 +81,7 @@ export const oneTimePass = (name,email)=> async(dispatch) =>{
             }
         }
 
-        const {data} = await axios.post('/api/users/otpconfirmation',{name,email}, config)
+        const {data} = await axios.post('/api/users/otpconfirmation',{name,email,phoneNumber}, config)
 
         dispatch({
             type: OTP_SUCCESS,
@@ -95,7 +95,7 @@ export const oneTimePass = (name,email)=> async(dispatch) =>{
     }
 }
 
-export const register = (name,email,otp,password)=> async(dispatch) =>{
+export const register = (name,email,phoneNumber,otp,password)=> async(dispatch) =>{
     try {
         dispatch({
             type: USER_REGISTER_REQUEST
@@ -107,7 +107,7 @@ export const register = (name,email,otp,password)=> async(dispatch) =>{
             }
         }
 
-        const {data} = await axios.post('/api/users',{name,email,otp, password}, config)
+        const {data} = await axios.post('/api/users',{name,email,phoneNumber,otp, password}, config)
 
         dispatch({
             type: USER_REGISTER_SUCCESS,

@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
 import nodemailer from 'nodemailer'
+import fast2sms from 'fast-two-sms'
 import {google} from 'googleapis'
 
 const CLIENT_ID = '197795665228-91atcioirabb5dnqqba9ditmoqguk1ee.apps.googleusercontent.com'
@@ -31,7 +32,7 @@ async function sendMail(name,email,OTP){
             from: 'Nishant Jain <devnishant94@gmail.com>',
             to: email,
             subject: 'OTP',
-            text: `Hey ${name}, your OTP is ${OTP}`
+            text: `Hey ${name}, First 3-digits of your OTP is ${OTP}. Last 3-digits of OTP has been sent to your mobile number`
         }
 
         const result = await transport.sendMail(mailOptions)
@@ -66,7 +67,7 @@ const authUser = asyncHandler(async(req,res) => {
 })
 var OTP = ''
 const otpValidation = asyncHandler(async(req,res)=>{
-    const {name,email} = req.body
+    const {name,email,phoneNumber} = req.body
     const userExist = await User.findOne({email})
     if(userExist){
         res.status(400)
@@ -78,9 +79,14 @@ const otpValidation = asyncHandler(async(req,res)=>{
     {
         res.status(401)
         throw new Error('Enter Email')
+    }else if(phoneNumber===''|| phoneNumber.toString().length < 10 ){
+        res.status(401)
+        throw new Error('invalid Phone Number')
     }
     OTP = (Math.floor((Math.random())*(1000000-99999))+99999).toString();
-    sendMail(name,email,OTP)
+    await sendMail(name,email,OTP.slice(0,3));
+    var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer, Last 3-digits of your OTP is "${OTP.slice(3,6)}", First 3-digits of OTP has been sent to your mobile number `,numbers:[`${phoneNumber}`]}
+    await fast2sms.sendMessage(options)
     res.json(
         {
             name: name,
@@ -93,7 +99,7 @@ const otpValidation = asyncHandler(async(req,res)=>{
 //@route    POST /api/users
 //@access   Public
 const registerUser = asyncHandler(async(req,res) => {
-    const {name, email, password, otp} = req.body
+    const {name, email,phoneNumber, password, otp} = req.body
     const userExist = await User.findOne({email})
     if(userExist){
         res.status(400)
@@ -120,6 +126,7 @@ const registerUser = asyncHandler(async(req,res) => {
         const user = await User.create({
             name,
             email,
+            phoneNumber,
             password
         })
         if(user){
@@ -127,6 +134,7 @@ const registerUser = asyncHandler(async(req,res) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
+                phoneNumber: user.phoneNumber,
                 isAdmin: user.isAdmin,
                 isSeller: user.isSeller,
                 token: generateToken(user._id)
@@ -153,6 +161,7 @@ const getUserProfile =  asyncHandler(async(req,res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phoneNumber:user.phoneNumber,
             isAdmin: user.isAdmin,
             isSeller: user.isSeller,
         })
@@ -255,6 +264,14 @@ const updateUser =  asyncHandler(async(req,res) => {
         if(req.body.isSeller === undefined){
             user.isSeller
         }else user.isSeller = req.body.isSeller
+
+        if(req.body.email === ''){
+            user.email
+        }else user.email = req.body.email
+
+        if(req.body.phoneNumber === '' || req.body.phoneNumber.toString().length < 10){
+            user.phoneNumber
+        }else user.phoneNumber = req.body.phoneNumber
 
         const updatedUser = await user.save()
 

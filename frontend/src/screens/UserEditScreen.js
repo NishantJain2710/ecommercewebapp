@@ -12,6 +12,7 @@ const UserEditScreen = ({match, history}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [isAdmin, setIsAdmin] = useState(false)
     const [isSeller, setIsSeller] = useState(false)
 
@@ -38,6 +39,7 @@ const UserEditScreen = ({match, history}) => {
                 }else{
                      setName(user.name)
                      setEmail(user.email)
+                     setPhoneNumber(user.phoneNumber)
                      setIsAdmin(user.isAdmin)
                      setIsSeller(user.isSeller)
                 }
@@ -50,7 +52,7 @@ const UserEditScreen = ({match, history}) => {
     },[user,userInfo,dispatch,userId, successUpdate,history])
     const submitHandler = (e)=>{
         e.preventDefault()
-       dispatch(updateUser({_id: userId,name,isAdmin, isSeller}))
+       dispatch(updateUser({_id: userId,name,email,phoneNumber,isAdmin, isSeller}))
     }
     return (
         <>
@@ -70,7 +72,12 @@ const UserEditScreen = ({match, history}) => {
                 </div>
                 <div>
                     <label>Email Address</label>
-                    <input type="email"  value= {email}  disabled>
+                    <input type="email"  value= {email} onChange={(e) => setEmail(e.target.value)} >
+                    </input>
+                </div>
+                <div>
+                    <label>Phone Number</label>
+                    <input type="tel"  value= {phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} >
                     </input>
                 </div>
 

@@ -1081,6 +1081,11 @@ li{
 .col-PlaceOrderScreen-2{
   grid-area:price;
 }
+.col-PlaceOrderScreen-2 .card{
+  width: max-content;
+  height: max-content;
+  justify-content: center;
+}
 
 .placeOrder-row{
   display: flex;

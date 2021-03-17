@@ -9,6 +9,7 @@ const RegisterScreen = ({location, history}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [otp, setOtp] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -35,12 +36,12 @@ const RegisterScreen = ({location, history}) => {
         if(password !==confirmPassword){
             setMessage('Passwords do not match')
         }else{
-           dispatch(register(name,email,otp,password))
+           dispatch(register(name,email,phoneNumber,otp,password))
         }
     }
     const next = (e)=>{
         e.preventDefault()
-        dispatch(oneTimePass(name,email))
+        dispatch(oneTimePass(name,email,phoneNumber))
     }   
     return (
         <FormContainer>
@@ -48,7 +49,7 @@ const RegisterScreen = ({location, history}) => {
             <form onSubmit ={submitHandler}>
                 <label>Full Name</label>
                 <div >
-                    <input type="name" placeholder= 'YOUR NAME HERE' value= {name} onChange={(e) => setName(e.target.value)}>
+                    <input type="name" placeholder= 'Your Full Name' value= {name} onChange={(e) => setName(e.target.value)}>
                     </input>
                 </div>
                 <label>Email Address</label>
@@ -56,7 +57,12 @@ const RegisterScreen = ({location, history}) => {
                     <input type="email" placeholder= 'example@example.com' value= {email} onChange={(e) => setEmail(e.target.value)}>
                     </input>
                 </div>
-                <button onClick={next} className='primaryBtn getOtpBtn'>
+                <label>Phone Number</label>
+                <div>
+                    <input type="tel" placeholder= '98xxxxxxxx' value= {phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}>
+                    </input>
+                </div>
+                <button onClick={next} className='primaryBtn'>
                     GET OTP
                 </button>
                 {successMessage && <Message variant='success'>{successMessage}</Message>}

@@ -10,6 +10,7 @@ import {listMyOrders} from '../actions/orderActions'
 const ProfileScreen = ({location, history}) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState('')
@@ -40,6 +41,7 @@ const ProfileScreen = ({location, history}) => {
             }else{
                 setName(user.name)
                 setEmail(user.email)
+                setPhoneNumber(user.phoneNumber)
             }
         }
     },[dispatch, history, userInfo,user]
@@ -70,6 +72,11 @@ const ProfileScreen = ({location, history}) => {
                     <div>
                         <label>Email Address</label>
                         <input type="email"  value= {email} disabled>
+                        </input>
+                    </div>
+                    <div>
+                        <label>Phone Number</label>
+                        <input type="tel"  value= {phoneNumber} disabled>
                         </input>
                     </div>
 
