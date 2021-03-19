@@ -10,7 +10,8 @@ const RegisterScreen = ({location, history}) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
-    const [otp, setOtp] = useState('')
+    const [emailOtp, setEmailOtp] = useState('')
+    const [phoneOtp, setPhoneOtp] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
@@ -29,26 +30,31 @@ const RegisterScreen = ({location, history}) => {
         if(userInfo){
             history.push(redirect)
         }
-    },[history, userInfo, redirect]
+        if(successMessage){
+            document.getElementById('get-otp').setAttribute('disabled','disabled')
+        }
+    },[history,successMessage, userInfo, redirect]
     )
     const submitHandler = (e)=>{
         e.preventDefault()
         if(password !==confirmPassword){
             setMessage('Passwords do not match')
         }else{
-           dispatch(register(name,email,phoneNumber,otp,password))
+            const otp = emailOtp.concat(phoneOtp);
+            dispatch(register(name,email,phoneNumber,otp,password))
         }
     }
     const next = (e)=>{
         e.preventDefault()
         dispatch(oneTimePass(name,email,phoneNumber))
-    }   
+    }
+ 
     return (
         <FormContainer>
             <h1>Sign Up</h1>
             <form onSubmit ={submitHandler}>
                 <label>Full Name</label>
-                <div >
+                <div>
                     <input type="name" placeholder= 'Your Full Name' value= {name} onChange={(e) => setName(e.target.value)}>
                     </input>
                 </div>
@@ -62,30 +68,47 @@ const RegisterScreen = ({location, history}) => {
                     <input type="tel" placeholder= '98xxxxxxxx' value= {phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}>
                     </input>
                 </div>
-                <button onClick={next} className='primaryBtn'>
+                <button onClick={next} id='get-otp' className='primaryBtn'>
                     GET OTP
                 </button>
-                {successMessage && <Message variant='success'>{successMessage}</Message>}
-                {errorMessage && <Message variant='danger'>{errorMessage}</Message>}
+              
+                {errorMessage &&  <Message variant='danger'>{errorMessage}</Message> }
                 {loadingMessage && <Loader/>}
-                <label>Enter OTP</label>
-                <div>
-                    <input type="text" placeholder= 'Enter OTP' value= {otp} onChange={(e) => setOtp(e.target.value)}>
-                    </input>
-                </div>
-                <label>Password</label>
-                <div>
-                    <input type="password" placeholder= 'Example@123' value= {password} onChange={(e) => setPassword(e.target.value)}>
-                    </input>
-                </div>
-                <label>Confirm Password</label>
-                <div >
-                    <input type="password" placeholder= 'Example@123' value= {confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}>
-                    </input>
-                </div>
-                <button type='submit' className='primaryBtn'>
-                    Register
-                </button>
+                {successMessage && (
+                    <div>    
+                        <Message variant='success'>{successMessage}</Message>
+                        <div id='after-otp'>
+                            <label>Enter OTP</label>
+                            <div className='row-2'>
+                                <div className='col-1'>
+                                    <input type="text" placeholder= 'Email OTP' value= {emailOtp} onChange={(e) => setEmailOtp(e.target.value)}>
+                                    </input>
+                                </div>
+                                <div className='col-2'>
+                                    <input type="text" placeholder= 'Phone OTP' value= {phoneOtp} onChange={(e) => setPhoneOtp(e.target.value)}>
+                                    </input>
+                                </div>
+                            </div>
+                            <button onClick={next} className='LinkBtn'>
+                                Resend OTP
+                            </button>
+                            <label>Password</label>
+                            <div>
+                                <input type="password" placeholder= 'Example@123' value= {password} onChange={(e) => setPassword(e.target.value)}>
+                                </input>
+                            </div>
+                            <label>Confirm Password</label>
+                            <div >
+                                <input type="password" placeholder= 'Example@123' value= {confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}>
+                                </input>
+                            </div>
+                            <button type='submit' className='primaryBtn'>
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                )}
+                
             </form>
             {message && <Message variant='danger'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}

@@ -5,34 +5,29 @@ import nodemailer from 'nodemailer'
 import fast2sms from 'fast-two-sms'
 import {google} from 'googleapis'
 
-const CLIENT_ID = '197795665228-91atcioirabb5dnqqba9ditmoqguk1ee.apps.googleusercontent.com'
-const CLIENT_SECRET = 'x-KMOB5DVD9iyEngvviwi9Hf'
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground'
-const REFRESH_TOKEN = '1//04Po-fR7px_eSCgYIARAAGAQSNwF-L9Ir1dtQ7Txk6qxsGgaXXciC8c-H3wunfyXUNHwyhcmF2gdGLH3ggGdHlcEKQ66gn5Wp4-0'
-
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
-oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
 async function sendMail(name,email,OTP){
     try {
-        const accessToken = await oAuth2Client.getAccessToken()
-
+    const OAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI)
+    OAuth2Client.setCredentials({refresh_token: process.env.REFRESH_TOKEN})
+    const accessToken = await OAuth2Client.getAccessToken()
         const transport = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: 'devnishant94@gmail.com',
-                clientId : CLIENT_ID,
-                clientSecret: CLIENT_SECRET,
-                refreshToken: REFRESH_TOKEN,
+                user: process.env.DEV_EMAIL ,
+                clientId : process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: process.env.REFRESH_TOKEN,
                 accessToken : accessToken
             }
         })
+        
         const mailOptions = {
-            from: 'Nishant Jain <devnishant94@gmail.com>',
+            from: `Nishant Jain <${process.env.DEV_EMAIL}>`,
             to: email,
             subject: 'OTP',
-            text: `Hey ${name}, First 3-digits of your OTP is ${OTP}. Last 3-digits of OTP has been sent to your mobile number`
+            text: `Hey ${name}, Email Verification OTP is ${OTP}.`
         }
 
         const result = await transport.sendMail(mailOptions)
@@ -65,6 +60,12 @@ const authUser = asyncHandler(async(req,res) => {
         throw new Error('Invalid email or password')
     }
 })
+
+
+
+//@desc     generates otp
+//@route    POST /api/users/otpconfirmation
+//@access   Public
 var OTP = ''
 const otpValidation = asyncHandler(async(req,res)=>{
     const {name,email,phoneNumber} = req.body
@@ -85,13 +86,13 @@ const otpValidation = asyncHandler(async(req,res)=>{
     }
     OTP = (Math.floor((Math.random())*(1000000-99999))+99999).toString();
     await sendMail(name,email,OTP.slice(0,3));
-    var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer, Last 3-digits of your OTP is "${OTP.slice(3,6)}", First 3-digits of OTP has been sent to your mobile number `,numbers:[`${phoneNumber}`]}
+    var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer,OTP for Phone Number verification is ${OTP.slice(3,6)}.`,numbers:[`${phoneNumber}`]}
     await fast2sms.sendMessage(options)
     res.json(
         {
             name: name,
             email: email,
-            Message:'OTP has been send to your email address'
+            Message:'OTP has been sent to your email address and Phone Number'
         });
 })
 

@@ -1235,3 +1235,24 @@ hr {
     height: 400px;
   }
 }
+
+#after-otp .row-2{
+  margin: 0;
+  padding: 0;
+}
+.LinkBtn{
+  display: block;
+  border: 0;
+  background-color: transparent;
+  color: #4287f5;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 0 5px 0;
+}
+.LinkBtn:hover{
+  color: #3835c0;
+}
+#get-otp:disabled{
+  cursor:not-allowed;
+  background-color: #b5bdc9;
+}
