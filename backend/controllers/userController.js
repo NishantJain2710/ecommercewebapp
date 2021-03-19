@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
 import nodemailer from 'nodemailer'
-import fast2sms from 'fast-two-sms'
+// import fast2sms from 'fast-two-sms'
 import {google} from 'googleapis'
 
 
@@ -86,8 +86,8 @@ const otpValidation = asyncHandler(async(req,res)=>{
     }
     OTP = (Math.floor((Math.random())*(1000000-99999))+99999).toString();
     await sendMail(name,email,OTP.slice(0,3));
-    var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer,OTP for Phone Number verification is ${OTP.slice(3,6)}.`,numbers:[`${phoneNumber}`]}
-    await fast2sms.sendMessage(options)
+    // var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer,OTP for Phone Number verification is ${OTP.slice(3,6)}.`,numbers:[`${phoneNumber}`]}
+    // await fast2sms.sendMessage(options)
     res.json(
         {
             name: name,

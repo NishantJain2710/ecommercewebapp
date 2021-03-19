@@ -167,9 +167,12 @@ input[type=number] {
   height: 150px;
   width: 130px;
 }
-.category .card-title i {
+.category i {
   padding-right: 0.4rem;
   font-weight: 700;
+}
+.category-btn{
+  cursor: pointer;
 }
 
 /* .......................................Row And Col............................................ */
@@ -428,10 +431,6 @@ input[type=number] {
 
 
 
-.dropDown {
-  position: relative;
-}
-
 .dropDown-content {
   display: none;
   position: absolute;
@@ -450,7 +449,7 @@ input[type=number] {
 
 .dropDown-content a:hover {background-color: #ddd;}
 
-.dropDown:hover .dropDown-content {display: block;}
+/* .dropDown:hover .dropDown-content {display: block;} */
 
 /* ............................................Product Row and Col..................................................... */
 .product-row{
