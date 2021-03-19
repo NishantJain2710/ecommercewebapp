@@ -16,6 +16,9 @@ body {
   line-height: 1.6;
   padding-top: 64px;
 }
+input{
+  outline:inherit;
+ }
 
 .container{
   padding-left: 1.4rem;
@@ -201,13 +204,6 @@ input[type=number] {
     display: block;
     margin-bottom: 20px;
   }
-  /* .container {
-    max-width: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: auto;
-    margin-right: auto;
-  } */
 }
 
 
@@ -226,15 +222,7 @@ input[type=number] {
     height: 130px;
     width: 120px;
   }
-  
-  /* .container {
-    max-width: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 15px;
-  } */
+
 }
 
 .row-grid{
