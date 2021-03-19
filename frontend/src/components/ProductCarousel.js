@@ -3,10 +3,12 @@ import React from 'react'
 const ProductCarousel = () => {
     var counter=2;
     setInterval(function(){
-        document.getElementById('radio'+counter).checked =true;
-        counter++;
-        if(counter > 3){
-        counter = 1;
+        if(document.getElementById('radio'+counter)){
+            document.getElementById('radio'+counter).checked =true;
+            counter++;
+            if(counter > 3){
+            counter = 1;
+            }
         }
     },8000);
     
