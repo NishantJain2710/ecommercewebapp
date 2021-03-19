@@ -32,6 +32,8 @@ const RegisterScreen = ({location, history}) => {
         }
         if(successMessage){
             document.getElementById('get-otp').setAttribute('disabled','disabled')
+        }else{
+            document.getElementById('get-otp').removeAttribute('disabled')
         }
     },[history,successMessage, userInfo, redirect]
     )
