@@ -9,6 +9,8 @@ const ProductCarousel = () => {
             if(counter > 3){
             counter = 1;
             }
+        }else{
+            counter = 1;
         }
     },8000);
     

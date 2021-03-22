@@ -37,7 +37,7 @@ const PaymentScreen = ({history}) => {
                                 name='paymentMethod' 
                                 id='PayPal' 
                                 value = 'PayPal'
-                                checked="checked"
+                                checked='checked'
                                 onChange ={(e)=> setPaymentMethod(e.target.value)} 
                             />
                             <label htmlFor='PayPal' >PayPal or Credit Card</label>
@@ -49,7 +49,8 @@ const PaymentScreen = ({history}) => {
                                 id='Paytm' 
                                 value = 'Paytm'
                                 onChange ={(e)=> setPaymentMethod(e.target.value)} 
-                            /><label htmlFor='PayPal' >Paytm</label>
+                            />
+                            <label htmlFor='PayPal' >Paytm</label>
                             
                             
                         </div>

@@ -122,7 +122,7 @@ const OrderScreen = ({match,history}) => {
                                 <li key={index}>
                                     <div className='placeOrder-row'>
                                         <div className='placeOrder-row-item-1'>
-                                            <img src={item.image} alt={item.name} fluid rounded />
+                                            <img src={item.image} alt={item.name} />
                                         </div>
                                         <div className='placeOrder-row-item-2'>
                                             <Link to={`/product/${item.product}`}>

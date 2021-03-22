@@ -30,35 +30,41 @@ const ShippingScreen = ({history}) => {
             <CheckoutSteps step1 step2/>
             <h1>SHIPPING</h1>
             <form onSubmit ={ submitHandler}>
-                <div>
-                    <label>House Number</label>
-                    <input type="text" placeholder= 'Enter House Number' value= {houseNumber} required onChange={(e) => setHouseNumber(e.target.value)}>
-                    </input>
+                <div className='row-2'>
+                    <div className='col-1'>
+                        <label>House Number</label>
+                        <input type="text" placeholder= 'Enter House Number' value= {houseNumber} required onChange={(e) => setHouseNumber(e.target.value)}>
+                        </input>
+                    </div>
+                    <div className='col-2'>
+                        <label>Street Number</label>
+                        <input type="text" placeholder= 'Enter Street Number' value= {streetNumber} required onChange={(e) => setStreetNumber(e.target.value)}>
+                        </input>
+                    </div>
                 </div>
-                <div>
-                    <label>Street Number</label>
-                    <input type="text" placeholder= 'Enter Street Number' value= {streetNumber} required onChange={(e) => setStreetNumber(e.target.value)}>
-                    </input>
+                <div className='row-2'>
+                    <div className='col-1'>
+                        <label>Landmark</label>
+                        <input type="text" placeholder= 'Enter Landmark' value= {landmark} required onChange={(e) => setLandmark(e.target.value)}>
+                        </input>
+                    </div>
+                    <div className='col-2'>
+                        <label>City</label>
+                        <input type="text" placeholder= 'Enter city' value= {city} required onChange={(e) => setCity(e.target.value)}>
+                        </input>
+                    </div>
                 </div>
-                <div>
-                    <label>Landmark</label>
-                    <input type="text" placeholder= 'Enter Landmark' value= {landmark} required onChange={(e) => setLandmark(e.target.value)}>
-                    </input>
-                </div>
-                <div>
-                    <label>City</label>
-                    <input type="text" placeholder= 'Enter city' value= {city} required onChange={(e) => setCity(e.target.value)}>
-                    </input>
-                </div>
-                <div>
-                    <label>State</label>
-                    <input type="text" placeholder= 'Enter State' value= {state} required onChange={(e) => setState(e.target.value)}>
-                    </input>
-                </div>
-                <div>
-                    <label>Country</label>
-                    <input type="text" placeholder= 'Enter country' value= {country} required onChange={(e) => setCountry(e.target.value)}>
-                    </input>
+                <div className='row-2'>
+                    <div className='col-1'>
+                        <label>State</label>
+                        <input type="text" placeholder= 'Enter State' value= {state} required onChange={(e) => setState(e.target.value)}>
+                        </input>
+                    </div>
+                    <div className='col-2'>
+                        <label>Country</label>
+                        <input type="text" placeholder= 'Enter country' value= {country} required onChange={(e) => setCountry(e.target.value)}>
+                        </input>
+                    </div>
                 </div>
                 <div>
                     <label>Pincode</label>

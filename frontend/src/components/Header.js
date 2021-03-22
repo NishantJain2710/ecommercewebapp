@@ -61,8 +61,8 @@ const Header = () => {
                 
                 {userInfo && userInfo.isAdmin &&(
                 <li className="navbar-item dropDown">
-                    <Link to=''className='navbar-link'>Admin<i className="fas fa-angle-down"></i></Link> 
-                        <div className="dropDown-content">
+                    <div className='navbar-link'>Admin<i className="fas fa-angle-down"></i></div> 
+                        <div id='Admin' className="dropDown-content">
                             <Link  to="/admin/userlist">Users</Link>
                             <Link  to="/admin/productlist">Products</Link>
                             <Link  to="/admin/orderlist">Orders</Link>
@@ -73,8 +73,8 @@ const Header = () => {
 
                 {userInfo && userInfo.isSeller &&(
                 <li className="navbar-item dropDown">
-                    <Link to=''className="navbar-link">Seller<i className="fas fa-angle-down"></i></Link>
-                        <div className="dropDown-content">
+                    <div  className="navbar-link">Seller<i className="fas fa-angle-down"></i></div>
+                        <div id='Seller' className="dropDown-content">
                             <Link  to={`/seller/${userInfo._id}/productlist`}>Products</Link>
                             <Link  to={`/seller/${userInfo._id}/orderlist`}>Orders</Link>
                         </div>
@@ -83,8 +83,8 @@ const Header = () => {
 
                 {userInfo ? (
                 <li className="navbar-item dropDown">
-                    <Link to=''className=" navbar-link ">{userInfo.name}<i className="fas fa-angle-down"></i></Link>
-                        <div className="dropDown-content">
+                    <div className=" navbar-link ">{userInfo.name}<i className="fas fa-angle-down"></i></div>
+                        <div id='User' className="dropDown-content">
                             <Link  to='/profile'><i className="fas fa-user-circle"></i>Profile</Link>
                             <Link  to='' onClick={logoutHandler}><i className="fas fa-sign-out-alt"></i>Logout</Link>
                         </div>

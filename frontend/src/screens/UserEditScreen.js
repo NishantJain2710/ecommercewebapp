@@ -81,15 +81,15 @@ const UserEditScreen = ({match, history}) => {
                     </input>
                 </div>
 
-                <div>
-                    <label>Is Admin</label>
-                    <input type="checkbox"  checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)}>
+                <div className='row-2'>
+                    <label className='col-1'>Is Admin</label>
+                    <input className='col-2' type="checkbox"  checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)}>
                     </input>
                 </div>
 
-                <div>
-                    <label>Is Seller</label>
-                    <input type="checkbox"  checked={isSeller} onChange={(e) => setIsSeller(e.target.checked)}>
+                <div className='row-2'>
+                    <label className='col-1'>Is Seller</label>
+                    <input className='col-2' type="checkbox"  checked={isSeller} onChange={(e) => setIsSeller(e.target.checked)}>
                     </input>
                 </div>
 
