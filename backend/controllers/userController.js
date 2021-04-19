@@ -2,7 +2,8 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
 import nodemailer from 'nodemailer'
-// import fast2sms from 'fast-two-sms'
+import bcrypt from 'bcryptjs'
+import fast2sms from 'fast-two-sms'
 import {google} from 'googleapis'
 
 
@@ -15,7 +16,7 @@ async function sendMail(name,email,OTP){
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: process.env.DEV_EMAIL ,
+                user: process.env.DEV_EMAIL,
                 clientId : process.env.CLIENT_ID,
                 clientSecret: process.env.CLIENT_SECRET,
                 refreshToken: process.env.REFRESH_TOKEN,
@@ -84,10 +85,15 @@ const otpValidation = asyncHandler(async(req,res)=>{
         res.status(401)
         throw new Error('invalid Phone Number')
     }
+
     OTP = (Math.floor((Math.random())*(1000000-99999))+99999).toString();
     await sendMail(name,email,OTP.slice(0,3));
-    // var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer,OTP for Phone Number verification is ${OTP.slice(3,6)}.`,numbers:[`${phoneNumber}`]}
-    // await fast2sms.sendMessage(options)
+    var options = {authorization: process.env.SMS_API_KEY,message: `Dear Customer,OTP for Phone Number verification is ${OTP.slice(3,6)}.`,numbers:[`${phoneNumber}`]}
+    await fast2sms.sendMessage(options)
+
+    const salt = await bcrypt.genSalt(10)
+    OTP = await bcrypt.hash(OTP,salt)
+
     res.json(
         {
             name: name,
@@ -95,6 +101,7 @@ const otpValidation = asyncHandler(async(req,res)=>{
             Message:'OTP has been sent to your email address and Phone Number'
         });
 })
+
 
 //@desc     Register a new user
 //@route    POST /api/users
@@ -123,7 +130,7 @@ const registerUser = asyncHandler(async(req,res) => {
         res.status(401)
         throw new Error('Enter Password')
     }
-    if(otp === OTP){
+    if(await bcrypt.compare(otp, OTP)){
         const user = await User.create({
             name,
             email,
