@@ -37,7 +37,7 @@ const PaymentScreen = ({history}) => {
                                 name='paymentMethod' 
                                 id='PayPal' 
                                 value = 'PayPal'
-                                checked='checked'
+                                checked = {true ? paymentMethod === 'PayPal' : null}
                                 onChange ={(e)=> setPaymentMethod(e.target.value)} 
                             />
                             <label htmlFor='PayPal' >PayPal or Credit Card</label>
