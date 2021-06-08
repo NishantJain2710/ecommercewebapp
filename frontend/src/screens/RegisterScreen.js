@@ -57,7 +57,7 @@ const RegisterScreen = ({location, history}) => {
             <form onSubmit ={submitHandler}>
                 <label>Full Name</label>
                 <div>
-                    <input type="name" placeholder= 'Your Full Name' value= {name} onChange={(e) => setName(e.target.value)}>
+                    <input type="text" placeholder= 'Your Full Name' value= {name} onChange={(e) => setName(e.target.value)}>
                     </input>
                 </div>
                 <label>Email Address</label>
